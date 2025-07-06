@@ -158,8 +158,8 @@ namespace Auto{
 		if (tab && tab->video->GetState() != None) {
 			float FPS;
 			tab->video->GetFPSAndAspectRatio(&FPS, NULL, NULL, NULL);
-			int ms = (tab->video->IsDirectShow()) ? ((frame * 1000) / FPS) :
-				tab->video->GetFFMS2()->GetMSfromFrame(frame);
+			int ms = (tab->video->IsDirectShow()) ? (((frame * 1000) / FPS) - ((1000.f / FPS) / 2.f) ):
+				tab->video->GetRenderer()->GetFrameTimeFromFrame(frame, true);
 			lua_pushnumber(L, ms);
 		}
 		else {
@@ -1372,7 +1372,7 @@ namespace Auto{
 		bool changes = AddFromSubs();
 
 		int start = 34000, i = 0;
-		//if(all){
+		
 		for (size_t g = 0; g < Scripts.size(); g++){
 			auto script = Scripts[g];
 			if (script->CheckLastModified(true)){ script->Reload(); }
@@ -1418,10 +1418,10 @@ namespace Auto{
 			}, start);
 			start++;
 			(*bar)->Append(-1, script->GetName(), submenu, script->GetDescription());
-			//if(i%20==19){(*bar)->Break();}
+			
 			i++;
 		}
-		//}
+		
 
 		for (size_t g = 0; g < ASSScripts.size(); g++){
 			auto script = ASSScripts[g];

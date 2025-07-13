@@ -707,7 +707,8 @@ void KaiListCtrl::OnMouseEvent(wxMouseEvent &evt)
 						hasArrow = false;
 						lastCollumn = i;
 					}
-					break;
+					//break;
+					return;
 				}
 			}
 

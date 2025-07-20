@@ -723,6 +723,9 @@ void VideoBox::SetFullscreen(int monitor)
 	}
 	//turn on fullscreen
 	else{
+		int sizex, sizey;
+		GetSize(&sizex, &sizey);
+		Options.SetCoords(VIDEO_WINDOW_SIZE, sizex, sizey);
 		if (wxWindow::HasCapture()){ wxWindow::ReleaseMouse(); }
 		wxRect rt = GetMonitorRect1(monitor, &MonRects, Kai->GetRect());
 		if (!m_FullScreenWindow){

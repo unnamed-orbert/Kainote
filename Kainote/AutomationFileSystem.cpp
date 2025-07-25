@@ -17,6 +17,7 @@
 
 
 #include "AutomationUtils.h"
+#include <codecvt>
 #include <windows.h>
 
 #include <boost/filesystem/operations.hpp>
@@ -222,7 +223,7 @@ namespace Auto{
 
 	char *currentdir(char **err) {
 		return wrap(err, []{
-			return strndup(bfs::current_path().string());
+			return strndup(wxString(bfs::current_path().string()));
 		});
 	}
 

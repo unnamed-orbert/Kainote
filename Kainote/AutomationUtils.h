@@ -141,6 +141,7 @@ namespace Auto{
 	void argcheck(lua_State *L, bool cond, int narg, const char *msg);
 
 	inline void push_value(lua_State *L, bool value) { lua_pushboolean(L, value); }
+	//inline void push_value(lua_State* L, const wxString &value) { lua_pushstring(L, value.mb_str(wxConvUTF8).data()); }
 	inline void push_value(lua_State *L, const char *value) { lua_pushstring(L, value); }
 	inline void push_value(lua_State *L, double value) { lua_pushnumber(L, value); }
 	inline void push_value(lua_State *L, int value) { lua_pushinteger(L, value); }
@@ -153,7 +154,8 @@ namespace Auto{
 	}
 
 	inline void push_value(lua_State *L, wxString const& value) {
-		lua_pushlstring(L, value.c_str(), value.size());
+		//lua_pushlstring(L, value.mb_str(wxConvUTF8).data(), value.size());
+		lua_pushstring(L, value.mb_str(wxConvUTF8).data());
 	}
 
 	inline void push_value(lua_State *L, lua_CFunction value) {

@@ -1,90 +1,124 @@
 | Download | Help Us Translate! | Join Discord Server |
-|-------|----------|---------|
+| :---: | :---: | :---: |
 | [![release](https://img.shields.io/github/v/release/bjakja/Kainote.svg?maxAge=3600&label=download)](https://github.com/bjakja/Kainote/releases) | [![Translation status](https://hosted.weblate.org/widgets/kainote/-/svg-badge.svg)](https://hosted.weblate.org/engage/kainote/?utm_source=widget) | [![Discord](https://img.shields.io/discord/961361569269293077.svg?label=discord&labelColor=7289da&color=2c2f33&style=flat)](https://discord.gg/9WacFTtK6q) |
 
-
 # Kainote
-Subtitle editor that can play videos using FFMS2 (for typesetting, timing, and more advanced editing) or DirectShow (for playback or minor subtitle editing).
+
+Kainote is a powerful subtitle editor designed for a wide range of tasks. It utilizes **FFMS2** for high-precision work like typesetting, timing, and advanced editing, and **DirectShow** for general video playback and minor subtitle adjustments.
 
 ## Features
 
-* Supported formats: ASS, SSA (loaded convert to ASS), SRT, MPL2, MDVD, TMP. 
+* **Comprehensive Format Support**: Natively handles ASS, SRT, MPL2, MDVD, and TMP formats. SSA files are automatically converted to ASS upon loading.
+* **Versatile Format Conversion**: Easily convert subtitles between any of the supported formats.
+* **Translation Mode**: A dedicated mode that displays the original text alongside the translation field, streamlining the localization process.
+* **Efficient Navigation**: Quickly seek to lines that have not yet been translated or committed to final.
+* **Bulk Tagging**: Apply ASS tags to multiple selected lines simultaneously.
+* **Visual Tools**: Visually adjust tags like `\pos`, `\move`, `\org`, `\clip`, `\iclip`, and vector drawings (`\p`) directly on the video frame.
+* **Precision Zoom**: Zoom in on the video, even in fullscreen mode, to create highly accurate vector clips and drawings.
+* **Integrated Time Shifting**: Adjust subtitle timing directly within the main grid and sync changes with the current audio/video position.
+* **Advanced Audio Tools**: Visualize audio as a spectrum or waveform display. Includes an auto-splitting tool perfect for timing karaoke lyrics.
+* **Automation 4 Support**: Leverage Automation 4 scripts with full dependency control.
+* **Subtitle Comparison**: Compare two different subtitle files side-by-side in separate tabs.
+* **Advanced Filtering**: Filter the subtitle view to hide unnecessary lines and focus on your work.
 
-* Conversion from one format to another.
+## Beta Builds
 
-* Translation mode: keeps the original text in the second text field until the translation is complete. 
+You can download the latest beta version of Kainote from the link below.
 
-* Seeking not translated and not committed lines.
+[**Download Kainote Beta**](https://drive.google.com/uc?id=1ECqsrLo5d1jPoz-FKvJrS0279YeTKrmS&export=download)
 
-* Buttons for putting ASS tags in multiple lines.
+**Please Note**: Beta builds are unstable and intended for testing purposes. Features may be incomplete or contain bugs. If you encounter issues or have feedback, please join our Discord server.
 
-* Video visual tools for basic tags and a position shifter to move the positions of multiple tags: \pos, \move, \org, \clip, \iclip and \p (ASS drawings).
+## Contributing
 
-* Video zoom to use with visual tools. Works also on fullscreen that makes possible to create very accurate vector clips and drawings.
+### Translations
 
-* Shift times docked in subtitles grid with moving to audio/video time.
+Want to see Kainote in your native language? You can help us by contributing translations on Weblate, a user-friendly platform for localization.
 
-* Audio spectrum/waveform with karaoke auto-splitting tool good for Japanese lyrics.
+[Help Translate Kainote on Weblate](https://hosted.weblate.org/engage/kainote/?utm_source=widget)
 
-* Automation 4 with Dependency control.
+[![Translation status](https://hosted.weblate.org/widget/kainote/287x66-grey.png)](https://hosted.weblate.org/engage/kainote/)
 
-* Subtitles comparison to compare two subtitles from different tabs.
+### Support & Community
 
-* Subtitles filtering to hide unneeded lines.
+For questions, help, or to join the community, find us on Discord!
 
-## Beta Build
+[**Join the Kainote Discord Server**](https://discord.gg/8kNAxDFgwj)
 
-You can download Kainote beta version [here.](https://drive.google.com/uc?id=1ECqsrLo5d1jPoz-FKvJrS0279YeTKrmS&export=download)
+## Building from Source
 
-Please Note: Beta is an unstable version, and if you have any questions, you can reach out to us on [Discord](https://discord.gg/8kNAxDFgwj).
+### Prerequisites
 
-## Contributing a translations
-Want to help translate Kainote to your language? You can easily help by utilizing a service we use called **Weblate**.
+Before you begin, you must install the following software:
 
-Visit our translation project [here](https://hosted.weblate.org/engage/kainote/?utm_source=widget).
+  * **Visual Studio 2022** with the "Desktop development with C++" workload.
+      * **Note**: The solution uses the x64 compiler to build the ICU library, a process that can consume up to 16GB of RAM. Ensure you have sufficient memory or a large page file configured.
+  * [**DirectX SDK (June 2010)**](https://www.microsoft.com/en-us/download/details.aspx?id=6812)
+  * **Windows 10/11 SDK**: This can be installed via the Visual Studio Installer.
+  * **NASM**: Download and install the latest stable version of [NASM](https://www.nasm.us/). The installer must be configured to add `nasm.exe` to your system's PATH.
 
-## FAQ
+### 1. Initial Project Setup
 
-You can reach out to us on [Discord](https://discord.gg/8kNAxDFgwj).
+1.  Download the following libraries and extract their contents directly into the `Thirdparty` folder. The final paths should look like `Thirdparty/boost`, `Thirdparty/icu`, etc.
+    * [**Boost**](https://www.boost.org/releases/latest/)
+    * [**icu**](https://github.com/unicode-org/icu/releases/) (Download icu4c-*-src.zip)
+2.  The solution requires **FFMS2** (FFmpeg Source 2), which must be compiled from source. Follow the steps in the next section carefully.
 
-## Building
+### 2. Building Dependencies (FFmpeg & FFMS2)
 
-To build, you need to install:
-* Visual Studio 2019 (it builds Icu with x64 compiler but uses 16gb of RAM).
-* [DirectX SDK](https://www.microsoft.com/en-us/download/details.aspx?id=6812)
-* Windows SDK 10 - install it with the Visual Studio 2019 installer
+These steps use **MSYS2** to create a build environment for compiling the libraries with the Microsoft Visual C++ (MSVC) compiler.
 
-You need to put the following libraries into the Thirdparty folder so that the source code does not have one main folder:
-* [Boost](https://boostorg.jfrog.io/artifactory/main/release/1.73.0/source/boost_1_73_0.7z)
-* [Icu](https://github.com/unicode-org/icu/releases/download/release-60-3/icu4c-60_3-src.zip)
-* (For libass, install NASM in `C:/Nasm`)
+#### A. Configure MSYS2 Environment
 
-Next:
-* Change the paths of installed Windows SDK 10 and Direct X in project properties if they are not installed on the C drive. (Sometimes Visual Studio 2017 may not find the paths to Windows SDK 10.)
-* Then manually add them to project properties c/c++ -> general -> additional include directories and Linker -> general -> additional include directories (This is one of the bugs of Visual Studio 2019.)
-
-* Build FFMS2:
-    - Download **MSYS2**, msys2-x86_64-{date}.exe from https://www.msys2.org/
-    - Install it into `c:/msys64`
-    - Edit `c:/msys64/msys2_shell.cmd` and replace `rem` from the line with `rem set MSYS2_PATH_TYPE=inherit`
-    - Open a **x64 Native Tools Command Prompt for VS 2019**
-    - Run `c:/msys64/msys2_shell.cmd`
-    - Use the MSYS2 shell for the next steps and enter:
-    ```pacman -Syu
-    pacman -S make
-    pacman -S diffutils
-    pacman -S yasm
-    pacman -S nasm
-
+1.  **Install MSYS2**: Download `msys2-x86_64-{date}.exe` from [msys2.org](https://www.msys2.org/) and install it to the default location, `C:/msys64`.
+2.  **Enable MSVC Toolchain**: Edit the file `C:/msys64/msys2_shell.cmd`. Find the line `rem set MSYS2_PATH_TYPE=inherit` and uncomment it by removing `rem`.
+3.  **Launch the Build Shell**:
+      * Open a **x64 Native Tools Command Prompt for VS 2022** from your Start Menu.
+      * Inside this command prompt, execute `C:/msys64/msys2_shell.cmd` to start the MSYS2 shell. All subsequent commands in this section should be run from this shell.
+4.  **Install Build Tools**: Run the following commands to update the package database and install necessary tools.
+    ```bash
+    pacman -Syyu make diffutils pkg-config
+    ```
+5.  **Prevent Linker Conflict**: MSYS2 has its own `link.exe`, which conflicts with MSVC's linker. Rename it temporarily:
+    ```bash
     mv /usr/bin/link.exe /usr/bin/link.exe.bak
     ```
-    - Get the code of FFmpeg from https://github.com/FFmpeg/FFmpeg/archive/refs/heads/master.zip
-    - Unpack it somewhere on the C drive with a short path, for example: `c:/ffmpeg`
-    - Set the path to FFmpeg `cd c:/path_to_ffmpeg/`
-    - Type in **msys** console *(for x64 remove `--arch=x86 --arch=x86_64`)*:
-        ```
-        ./configure --toolchain=msvc --enable-gpl --enable-version3 --disable-encoders --disable-programs --disable-filters --disable-network --disable-doc --disable-avdevice --disable-postproc --disable-avfilter --enable-dxva2 --enable-d3d11va
-        ```
-    - When the list of codecs is displayed, type `make`
-    - After the build is complete, type `make install`
-- Done, you can build FFMS2 in the Kainote solution.
+
+#### B. Build FFmpeg (FFMS2 Prerequisite)
+
+1.  **Download FFmpeg**: Download the source code for a recent, stable FFmpeg release, like [**n7.1.1**](https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n7.1.1.zip). Unpack it to a simple path, e.g., `C:/ffmpeg`.
+2.  **Configure & Build**: In your MSYS2 shell, navigate to the FFmpeg directory and run the following commands. The configure script prepares a 64-bit build with minimal features needed for FFMS2.
+    ```bash
+    # Navigate to the source directory
+    cd /c/ffmpeg
+
+    # Configure the build for MSVC
+    ./configure --toolchain=msvc --enable-gpl --enable-version3 --disable-programs --disable-doc --disable-avdevice --disable-postproc --disable-avfilter --enable-dxva2 --enable-d3d11va
+
+    # Compile and install
+    make
+    make install
+    ```
+    This will install the FFmpeg headers and libraries into `C:/msys64/usr/local`.
+
+#### C. Build FFMS2
+
+1.  **Download FFMS2**: Download the FFMS2 source code from its [GitHub repository](https://github.com/FFMS/ffms2/archive/refs/heads/master.zip). Unpack it to a simple path, e.g., `C:/ffms2`.
+2.  **Configure & Build**: In the same MSYS2 shell, navigate to the FFMS2 directory and run its build process. It will automatically find the FFmpeg you just installed.
+    ```bash
+    # Navigate to the source directory
+    cd /c/ffms2
+
+    # Configure the build
+    ./configure --toolchain=msvc
+
+    # Compile and install
+    make
+    make install
+    ```
+
+### 3. Building Kainote
+
+1.  **Configure Project Paths**: If you installed the Windows SDK or DirectX SDK to a location other than the `C:` drive, you must update the paths in the project properties within Visual Studio (`Project Properties > VC++ Directories`).
+      * **Note**: Visual Studio can sometimes fail to find SDK paths. If you get build errors, you may need to manually add the paths in `Project Properties > C/C++ > General > Additional Include Directories` and `Linker > General > Additional Library Directories`.
+2.  **Build the Solution**: After all dependencies are set up correctly, open the `Kainote.sln` solution file in Visual Studio 2022. Set the solution configuration to **Release** and the platform to **x64**, then build the project.

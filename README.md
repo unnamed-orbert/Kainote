@@ -17,9 +17,9 @@ Kainote is a powerful subtitle editor designed for a wide range of tasks. It uti
 * **Precision Zoom**: Zoom in on the video, even in fullscreen mode, to create highly accurate vector clips and drawings.
 * **Integrated Time Shifting**: Adjust subtitle timing directly within the main grid and sync changes with the current audio/video position.
 * **Advanced Audio Tools**: Visualize audio as a spectrum or waveform display. Includes an auto-splitting tool perfect for timing karaoke lyrics.
-* **Automation 4 Support**: Leverage Automation 4 scripts with full dependency control.
+* **Automation 4 Support**: Supported Automation 4 scripts with [DependencyControl](https://github.com/TypesettingTools/DependencyControl).
 * **Subtitle Comparison**: Compare two different subtitle files side-by-side in separate tabs.
-* **Advanced Filtering**: Filter the subtitle view to hide unnecessary lines and focus on your work.
+* **Advanced Subtitle Filtering**: Filter the subtitle view to hide unnecessary lines and focus on your work.
 
 ## Beta Builds
 

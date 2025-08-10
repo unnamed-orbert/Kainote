@@ -20,5 +20,5 @@
 //StableReleaseLink: https://github.com/bjakja/Kainote/releases/download/v0.9.3.893/Kainote.x64.zip
 //VersionKainoteX86: 0.9.3.910
 
-#define VersionKainote "1.0.0.1529"
-#define NumVersionKainote 1,0,0,1529
+#define VersionKainote "1.0.0.1531"
+#define NumVersionKainote 1,0,0,1531

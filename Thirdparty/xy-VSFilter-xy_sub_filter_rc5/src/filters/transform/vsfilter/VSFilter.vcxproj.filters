@@ -23,6 +23,9 @@
     <ClCompile Include="Copy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="csriapi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="DirectVobSub.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,9 +78,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DirectVobSubFilterDll.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Build\Vsfilter\csriapi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

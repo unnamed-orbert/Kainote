@@ -1770,13 +1770,17 @@ void VideoBox::SetKeyFramesFileName(const wxString & fileName)
 {
 	m_KeyframesFileName = fileName;
 }
-void VideoBox::GetWindowSize(int* x, int* y)
+void VideoBox::GetWindowSize(int* x, int* y, bool withTabPanel)
 {
 	if (m_IsFullscreen) {
 		m_FullScreenWindow->GetClientSize(x, y);
+		if (m_PanelOnFullscreen && !withTabPanel)
+			*y -= m_PanelHeight;
 	}
 	else {
 		GetClientSize(x, y);
+		if (!withTabPanel)
+			*y -= m_PanelHeight;
 	}
 }
 

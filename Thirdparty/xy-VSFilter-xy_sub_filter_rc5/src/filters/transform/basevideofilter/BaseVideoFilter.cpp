@@ -31,7 +31,7 @@
 #include <initguid.h>
 #include "..\..\..\..\include\moreuuids.h"
 #include <algorithm>
-//#include "xy_logger.h"
+#include "xy_logger.h"
 
 #pragma warning(pop) 
 
@@ -140,7 +140,7 @@ CBaseVideoFilter::CBaseVideoFilter(TCHAR* pName, LPUNKNOWN lpunk, HRESULT* phr, 
 	if(phr) 
         *phr = S_OK;
     HRESULT hr = S_OK;
-    m_pInput = new CBaseVideoInputPin(L"CBaseVideoInputPin", this, &hr, L"Video");
+    m_pInput = new CBaseVideoInputPin(NAME("CBaseVideoInputPin"), this, &hr, L"Video");
 	if(!m_pInput)
     {
         if (phr) *phr = E_OUTOFMEMORY;
@@ -151,7 +151,7 @@ CBaseVideoFilter::CBaseVideoFilter(TCHAR* pName, LPUNKNOWN lpunk, HRESULT* phr, 
         if (phr) *phr = hr;
         return;
     }
-    m_pOutput = new CBaseVideoOutputPin(L"CBaseVideoOutputPin", this, &hr, L"Output");
+    m_pOutput = new CBaseVideoOutputPin(NAME("CBaseVideoOutputPin"), this, &hr, L"Output");
 	if(!m_pOutput)
     {
         delete m_pInput, m_pInput = NULL;
@@ -578,22 +578,22 @@ HRESULT CBaseVideoFilter::CheckReconnect( const CMediaType* mtIn, const CMediaTy
         hr = GetMediaType(position, &desiredMt);
         if (hr!=S_OK)
         {
-            //XY_LOG_ERROR(_T("Unexpected error when GetMediaType.")<<XY_LOG_VAR_2_STR(position));
+            XY_LOG_ERROR(_T("Unexpected error when GetMediaType.")<<XY_LOG_VAR_2_STR(position));
         }
         else
         {
             hr = CheckTransform(&desiredMt, mtOut);
             if (hr!=S_OK)
             {
-                //XY_LOG_DEBUG(_T("Transform not accept.")<<XY_LOG_VAR_2_STR(GuidNames[desiredMt.subtype])
-                    //<<XY_LOG_VAR_2_STR(GuidNames[mtOut->subtype]));
+                XY_LOG_DEBUG(_T("Transform not accept.")<<XY_LOG_VAR_2_STR(GuidNames[desiredMt.subtype])
+                    <<XY_LOG_VAR_2_STR(GuidNames[mtOut->subtype]));
             }
             else
             {
                 hr = m_pInput->GetConnected()->QueryAccept(&desiredMt);
                 if(hr!=S_OK)
                 {
-                    //XY_LOG_DEBUG(_T("Upstream not accept.")<<XY_LOG_VAR_2_STR(GuidNames[desiredMt.subtype]));
+                    XY_LOG_DEBUG(_T("Upstream not accept.")<<XY_LOG_VAR_2_STR(GuidNames[desiredMt.subtype]));
                 }
                 else
                 {
@@ -809,11 +809,11 @@ void CBaseVideoFilter::InitOutputColorSpaces()
         //log
     }
     m_outputFmtCount = count;
-    //XY_LOG_DEBUG(XY_LOG_VAR_2_STR(m_outputFmtCount));
+    XY_LOG_DEBUG(XY_LOG_VAR_2_STR(m_outputFmtCount));
     for (UINT i=0;i<count;i++)
     {
         m_outputFmt[i] = OutputFmts + preferredOrder[i];
-        //XY_LOG_DEBUG(i<<" "<<CStringA(OutputFmt2String(*m_outputFmt[i])));
+        XY_LOG_DEBUG(i<<" "<<CStringA(OutputFmt2String(*m_outputFmt[i])));
     }
 }
 

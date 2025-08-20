@@ -1300,7 +1300,7 @@ void VideoBox::OnCopyCoords(const wxPoint &pos)
 	int posx = (float)pos.x * coeffX;
 	int posy = (float)pos.y * coeffY;
 	wxString poss;
-	poss << posx << L", " << posy;
+	poss << posx << L"," << posy;
 	if (wxTheClipboard->Open())
 	{
 		wxTheClipboard->SetData(new wxTextDataObject(poss));

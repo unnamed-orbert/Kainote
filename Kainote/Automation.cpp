@@ -212,7 +212,7 @@ namespace Auto{
 		path.Replace(L'/', L'\\');
 		wxString firstAutomation = Options.pathfull + "\\Automation";
 		if (path[0] == L'?'){
-			if (path[1] == L'a' && path[4] == L'i') path.replace(0, 6, (tab) ? tab->VideoPath.BeforeLast(L'\\') : wxString(L""));
+			if (path[1] == L'a' && path[4] == L'i') path.replace(0, 6, (tab) ? tab->AudioPath.BeforeLast(L'\\') : wxString(L""));
 			else if (path[1] == L'd' && path[4] == L'a') path.replace(0, 5, firstAutomation);
 			else if (path[1] == L'd' && path[4] == L't') path.replace(0, 11, Options.pathfull + wxString(L"\\Dictionary"));
 			else if (path[1] == L'l' && path[4] == L'a') path.replace(0, 6, firstAutomation);
@@ -381,9 +381,9 @@ namespace Auto{
 
 			size_t pos = y * frame->pitch + x * 4;
 			// VideoFrame is stored as BGRA, Color expects RGBA
-			AssColor* color = new AssColor(frame->data[pos + 2], 
+			AssColor color = AssColor(frame->data[pos + 2], 
 				frame->data[pos + 1], frame->data[pos], frame->data[pos + 3]);
-			push_value(L, color->GetAss(true));
+			push_value(L, color.GetAss(false));
 		}
 		else {
 			lua_pushnil(L);
@@ -434,15 +434,14 @@ namespace Auto{
 
 			RendererVideo* renderer = tab->video->GetRenderer();
 			byte* frameBuff = renderer->GetFrame(frameNumber, withSubtitles);
+			VideoFrame* frame = new VideoFrame();
 
-			VideoFrame *frame = new VideoFrame();
-			frame->data = frameBuff;
 			tab->video->GetVideoSize(&frame->width, &frame->height);
 			frame->pitch = frame->width * 4;
 			frame->flipped = false;
-
+			frame->data = frameBuff;
+				
 			*static_cast<VideoFrame**>(lua_newuserdata(L, sizeof(VideoFrame*))) = frame;
-
 
 			luaL_getmetatable(L, "VideoFrame");
 			lua_setmetatable(L, -2);
@@ -454,19 +453,23 @@ namespace Auto{
 	}
 
 
-	/*int lua_get_audio_selection(lua_State* L)
+	int lua_get_audio_selection(lua_State* L)
 	{
 		
-		const agi::Context* c = get_context(L);
-		if (!c || !c->audioController || !c->audioController->GetTimingController()) {
+		TabPanel* tab = Notebook::GetTab();
+		if (tab && tab->edit->ABox) {
+
+			Dialogue* dial = tab->grid->GetCurrentLine();
+			
+			push_value(L, dial->Start.mstime);
+			push_value(L, dial->End.mstime);
+			return 2;
+		}
+		else {
 			lua_pushnil(L);
 			return 1;
 		}
-		const TimeRange range = c->audioController->GetTimingController()->GetActiveLineRange();
-		push_value(L, range.begin());
-		push_value(L, range.end());
-		return 2;
-	}*/
+	}
 
 	int lua_set_status_text(lua_State* L)
 	{
@@ -548,10 +551,10 @@ namespace Auto{
 			set_field(L, "video_position", (c->video->HasFFMS2()) ? 
 				c->video->GetFFMS2()->GetFramefromMS(c->video->Tell()) : NULL);
 #undef PUSH_FIELD
-			set_field(L, "audio_file", c->VideoPath);
+			set_field(L, "audio_file", c->AudioPath);
 			set_field(L, "video_file", c->VideoPath);
 			set_field(L, "timecodes_file", "");
-			set_field(L, "keyframes_file", "");
+			set_field(L, "keyframes_file", c->KeyframesPath);
 		}
 		return 1;
 	}
@@ -617,6 +620,7 @@ namespace Auto{
 		// prepare stuff in the registry
 
 		// store the script's filename
+		wxString fn = GetFilename();
 		push_value(L, GetFilename());
 		lua_setfield(L, LUA_REGISTRYINDEX, "filename");
 		stackcheck.check_stack(0);
@@ -644,6 +648,7 @@ namespace Auto{
 		set_field<get_file_name>(L, "file_name");
 		set_field<get_translation>(L, "gettext");
 		set_field<project_properties>(L, "project_properties");
+		set_field<lua_get_audio_selection>(L, "get_audio_selection");
 		set_field<lua_set_status_text>(L, "set_status_text");
 		set_field<get_frame>(L, "get_frame");
 		lua_createtable(L, 0, 5);
@@ -662,7 +667,7 @@ namespace Auto{
 		if (!LoadFile(L, GetFilename())) {
 			description = get_string_or_default(L, 1);
 			lua_pop(L, 1);
-			//lua_gc(L, LUA_GCCOLLECT, 0);
+			lua_gc(L, LUA_GCCOLLECT, 0);
 			return;
 		}
 		stackcheck.check_stack(1);
@@ -678,7 +683,7 @@ namespace Auto{
 			description = wxString::Format(_("Błąd inicjalizacji skryptu Lua \"%s\":\n\n%s."), GetPrettyFilename(), get_string_or_default(L, -1));
 			//lua_pop(L, 1);
 			lua_pop(L, 2); // error + error handler
-			//lua_gc(L, LUA_GCCOLLECT, 0);
+			lua_gc(L, LUA_GCCOLLECT, 0);
 			return;
 		}
 		lua_pop(L, 1); // error handler
@@ -703,7 +708,7 @@ namespace Auto{
 		// if we got this far, the script should be ready
 
 		//loaded = true;
-		//lua_gc(L, LUA_GCCOLLECT, 0);
+		lua_gc(L, LUA_GCCOLLECT, 0);
 	}
 
 	void LuaScript::Reload() { Create(); }

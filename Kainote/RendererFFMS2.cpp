@@ -554,7 +554,7 @@ byte *RendererFFMS2::GetFrameWithSubs(bool subs, bool *del)
 		*del = true;
 		byte *cpy = new byte[all];
 		cpy1 = cpy;
-		m_FFMS2->GetFrame(m_Time, cpy1);
+		m_FFMS2->GetFrame(m_Frame, cpy1);
 	}
 	else{ *del = false; }
 	return (!subs) ? cpy1 : m_FrameBuffer;

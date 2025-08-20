@@ -75,4 +75,5 @@ private:
 	FFMS_ErrorInfo m_errInfo;
 	FFMS_Index* m_index = nullptr;
 	const FFMS_Frame* m_FFMS2frame = nullptr;
+	bool m_refreshFrame = false;
 };

@@ -115,6 +115,12 @@ public:
 	// returns null when there's no visible dialogue with that offset or it is out of the table
 	Dialogue *CopyDialogueWithOffset(size_t i, int offset, bool push = true);
 	// returns null when is out of range
+	Dialogue *GetCurrentLine(){
+		if (currentLine < GetCount())
+			return GetDialogue(currentLine);
+
+		return NULL;
+	}
 	Dialogue *GetDialogue(size_t i);
 	// returns null when there's no visible dialogue with that offset or it is out of the table
 	Dialogue *GetDialogueWithOffset(size_t i, int offset);

@@ -543,11 +543,13 @@ done:
 
 }
 
-void ProviderFFMS2::GetFrame(int ttime, unsigned char* buff)
+void ProviderFFMS2::GetFrame(int frame, unsigned char* buff)
 {
-	byte* cpy = (byte*)m_FFMS2frame->Data[0];
+	wxCriticalSectionLocker lock(m_blockFrame);
+	const FFMS_Frame *ffmsframe = FFMS_GetFrame(m_videoSource, frame, &m_errInfo);
+	byte* cpy = (byte*)ffmsframe->Data[0];
 	memcpy(&buff[0], cpy, m_framePlane);
-
+	m_refreshFrame = true;
 }
 
 void ProviderFFMS2::GetFFMSFrame()
@@ -806,9 +808,10 @@ void ProviderFFMS2::DeleteOldAudioCache()
 
 void ProviderFFMS2::GetFrameBuffer(unsigned char** buffer)
 {
-	if (m_renderer->m_Frame != m_lastFrame) {
+	if (m_renderer->m_Frame != m_lastFrame || m_refreshFrame) {
 		GetFFMSFrame();
 		m_lastFrame = m_renderer->m_Frame;
+		m_refreshFrame = false;
 	}
 	if (!m_FFMS2frame) {
 		return;

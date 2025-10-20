@@ -145,7 +145,7 @@ public:
 	bool IsMenuShown();
 	const wxString &GetKeyFramesFileName();
 	void SetKeyFramesFileName(const wxString &fileName);
-	void GetWindowSize(int* x, int* y);
+	void GetWindowSize(int* x, int* y, bool withTabPanel = true);
 	PlaybackState GetState();
 private:
 

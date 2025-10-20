@@ -22,7 +22,6 @@
 #include <map>
 #include <iostream>
 
-
 TagData::TagData(const wxString &name, unsigned int _startTextPos)
 {
 	tagName = name;
@@ -33,6 +32,11 @@ void TagData::PutValue(const wxString &_value, bool _multiValue)
 {
 	value = _value;
 	multiValue = _multiValue;
+}
+
+void TagData::AppendValue(const wxString& _value)
+{
+	value += _value;
 }
 
 
@@ -681,9 +685,9 @@ ParseData* Dialogue::ParseTags(wxString *tags, size_t ntags, bool plainText)
 			if (pos >= len - 1){ pos++; }
 			//to not crash the program when subtract from unsigned 0 just add 1 to plain start
 			if ((plainText || hasDrawing) && plainStart + 1 <= pos){
-				TagData *newTag = new TagData((hasDrawing) ? L"pvector" : L"plain", plainStart);
+				TagData* newTag = new TagData((hasDrawing) ? L"pvector" : L"plain", plainStart);
 				newTag->PutValue(txt.SubString(plainStart, pos - 1));
-				parseData->AddData(newTag);
+				parseData->AddData(newTag);	
 			}
 		}
 		else if (tagsBlock && ch == L'\\'){
@@ -727,6 +731,7 @@ ParseData* Dialogue::ParseTags(wxString *tags, size_t ntags, bool plainText)
 							newTag->PutValue(tagValue);
 						}
 						parseData->AddData(newTag);
+
 						pos = tagEnd - 1;
 						break;
 					}

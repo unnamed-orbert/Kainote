@@ -47,7 +47,8 @@ void RotationXY::DrawVisual(int time)
 		else
 			to = org;
 	}
-	wxSize s = VideoSize.GetSize();
+	wxSize s;
+	tab->video->GetWindowSize(&s.x, &s.y, false);
 	float ratio = (float)s.x / (float)s.y;
 	float xxx = ((org.x / s.x) * 2) - 1;
 	float yyy = ((org.y / s.y) * 2) - 1;

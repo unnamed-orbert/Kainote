@@ -71,7 +71,7 @@ int _tmain(int argc, TCHAR* argv[])
 
 	std::vector<wchar_t *> filenames;
 	//used vector cause i always forget to add sizes;
-	filenames.push_back(L"\\Automation\\automation\\Autoload\\Aegisub-Motion.moon\0");
+	filenames.push_back(L"\\Automation\\automation\\Autoload\\a-mo.Aegisub-Motion.moon\0");
 	filenames.push_back(L"\\Automation\\automation\\Autoload\\cleantags-autoload.lua\0");
 	filenames.push_back(L"\\Automation\\automation\\Autoload\\gradient-factory.lua\0");
 	filenames.push_back(L"\\Automation\\automation\\Autoload\\kara-templater.lua\0");

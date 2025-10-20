@@ -165,19 +165,20 @@ void ItemHotkey::OnMapHotkey(KaiListCtrl *theList, int y)
 				theList->SetModified(true);
 				theList->PushHistory();
 			}
-			
-			ItemHotkey* item = (ItemHotkey*)theList->CopyRow(nitem, 1);
-			item->accel = hkd.hotkey;
-			item->modified = true;
-			ItemText* textitem = (ItemText*)theList->GetItem(nitem, 0);
-			textitem->modified = true;
-			
-			theList->ScrollTo(nitem + 1);
-			theList->SetSelection(nitem);
-			OptionsDialog::hotkeysCopy[idAndType(hotkeyId.id, hkd.type)] = hdata(name, hkd.hotkey);
-			theList->SetModified(true);
-			theList->PushHistory();
-			
+			else {
+				ItemHotkey* item = (ItemHotkey*)theList->CopyRow(nitem, 1);
+				item->accel = hkd.hotkey;
+				item->modified = true;
+				ItemText* textitem = (ItemText*)theList->GetItem(nitem, 0);
+				textitem->modified = true;
+
+				theList->ScrollTo(nitem + 1);
+				theList->SetSelection(nitem);
+				OptionsDialog::hotkeysCopy[idAndType(hotkeyId.id, hkd.type)] = hdata(name, hkd.hotkey);
+				theList->SetModified(true);
+				theList->PushHistory();
+			}
+			return;
 		}
 		ItemHotkey* item = (ItemHotkey*)theList->CopyRow(y, 1);
 		item->accel = hkd.hotkey;

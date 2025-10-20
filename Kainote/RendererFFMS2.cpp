@@ -422,18 +422,19 @@ int RendererFFMS2::GetDuration()
 
 int RendererFFMS2::GetFrameTime(bool start)
 {
+	//+5ms to avoid times +27ms where + 17ms is near
 	if (start){
 		int prevFrameTime = m_FFMS2->GetMSfromFrame(m_Frame - 1);
-		return m_Time + ((prevFrameTime - m_Time) / 2);
+		return m_Time + (((prevFrameTime - m_Time) / 2.f) + 5);
 	}
 	else{
 		if (m_Frame + 1 >= m_FFMS2->m_numFrames){
 			int prevFrameTime = m_FFMS2->GetMSfromFrame(m_Frame - 1);
-			return m_Time + ((m_Time - prevFrameTime) / 2);
+			return m_Time + (((m_Time - prevFrameTime) / 2.f) + 5);
 		}
 		else{
 			int nextFrameTime = m_FFMS2->GetMSfromFrame(m_Frame + 1);
-			return m_Time + ((nextFrameTime - m_Time) / 2);
+			return m_Time + (((nextFrameTime - m_Time) / 2.f) + 5);
 		}
 	}
 }
@@ -450,31 +451,33 @@ void RendererFFMS2::GetStartEndDelay(int startTime, int endTime, int *retStart, 
 
 int RendererFFMS2::GetFrameTimeFromTime(int _time, bool start)
 {
+	//+5ms to avoid times +27ms where + 17ms is near
 	if (start){
 		int frameFromTime = m_FFMS2->GetFramefromMS(_time);
 		int prevFrameTime = m_FFMS2->GetMSfromFrame(frameFromTime - 1);
 		int frameTime = m_FFMS2->GetMSfromFrame(frameFromTime);
-		return frameTime + ((prevFrameTime - frameTime) / 2);
+		return frameTime + ((prevFrameTime - frameTime) / 2.f) + 5;
 	}
 	else{
 		int frameFromTime = m_FFMS2->GetFramefromMS(_time);
 		int nextFrameTime = m_FFMS2->GetMSfromFrame(frameFromTime + 1);
 		int frameTime = m_FFMS2->GetMSfromFrame(frameFromTime);
-		return frameTime + ((nextFrameTime - frameTime) / 2);
+		return frameTime + ((nextFrameTime - frameTime) / 2.f) + 5;
 	}
 }
 
 int RendererFFMS2::GetFrameTimeFromFrame(int frame, bool start)
 {
+	//+5ms to avoid times +27ms where + 17ms is near
 	if (start){
 		int prevFrameTime = m_FFMS2->GetMSfromFrame(frame - 1);
 		int frameTime = m_FFMS2->GetMSfromFrame(frame);
-		return frameTime + ((prevFrameTime - frameTime) / 2);
+		return frameTime + ((prevFrameTime - frameTime) / 2.f) + 5;
 	}
 	else{
 		int nextFrameTime = m_FFMS2->GetMSfromFrame(frame + 1);
 		int frameTime = m_FFMS2->GetMSfromFrame(frame);
-		return frameTime + ((nextFrameTime - frameTime) / 2);
+		return frameTime + ((nextFrameTime - frameTime) / 2.f) + 5;
 	}
 }
 
@@ -551,7 +554,7 @@ byte *RendererFFMS2::GetFrameWithSubs(bool subs, bool *del)
 		*del = true;
 		byte *cpy = new byte[all];
 		cpy1 = cpy;
-		m_FFMS2->GetFrame(m_Time, cpy1);
+		m_FFMS2->GetFrame(m_Frame, cpy1);
 	}
 	else{ *del = false; }
 	return (!subs) ? cpy1 : m_FrameBuffer;
